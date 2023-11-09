@@ -18,6 +18,7 @@ usersMock.onGet(RegExp(`${apiUrl}/users/\\d+`)).reply((config) => {
 
 // 모의 POST 요청 핸들링
 usersMock.onPost(`${apiUrl}/users`).reply((config) => {
+  console.log("posted: server side");
   const postData = JSON.parse(config.data);
   const newItemId = Math.floor(Math.random() * 1000); // 가상 ID 생성
   return [201, { id: newItemId, ...postData }];

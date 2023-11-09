@@ -38,6 +38,7 @@ function App() {
   async function handlePost(event: FormEvent) {
     event.preventDefault();
     setIsLoading(true);
+    console.log("posted: client side");
 
     try {
       const response = await axios.post(
