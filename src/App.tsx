@@ -1,4 +1,4 @@
-import { useEffect, useState, ChangeEvent, FormEvent, Fragment } from "react";
+import { useEffect, useState, ChangeEvent, FormEvent } from "react";
 import axios from "axios";
 import { DefaultUser, UpdatingUser, EditingUser } from "@/types/user.type";
 
@@ -50,6 +50,7 @@ function App() {
       const newData = [...data, { ...dataRow, id: newId }];
       // 데이터 형태 맞춤
       setData(newData);
+      setDataRow({ name: "", age: 0 });
     } catch (error) {
       console.log(error);
     } finally {
@@ -60,8 +61,8 @@ function App() {
   function startEditing(id: number) {
     setIsEditing(true);
     const userToEdit = data.find((el) => el.id === id);
-    // find가 요소 혹은 undefined를 반환하기 때문에 prevState => 삼항 연산자 적용하였음
-    setEditedData((prevState) => (userToEdit ? userToEdit : prevState));
+    // find가 요소 혹은 undefined를 반환하기 때문에 prevData => 삼항 연산자 적용하였음
+    setEditedData((prevData) => (userToEdit ? userToEdit : prevData));
   }
 
   function editingData(event: ChangeEvent<HTMLInputElement>) {
@@ -122,38 +123,33 @@ function App() {
         <p>Loading...</p>
       ) : (
         <ul>
-          {data &&
-            data.map((el) => (
-              <Fragment key={el.id}>
-                <li>
-                  {isEditing && editedData.id === el.id ? (
-                    <>
-                      <input
-                        name="name"
-                        value={editedData.name}
-                        onChange={editingData}
-                      />
-                      <input
-                        name="age"
-                        value={editedData.age}
-                        onChange={editingData}
-                      />
-                      <button onClick={() => handleUpdate(el.id)}>Save</button>
-                      <button onClick={() => cancelEditing()}>Cancel</button>
-                    </>
-                  ) : (
-                    <>
-                      <span>{el.name}</span>
-                      <span>{el.age}</span>
-                      <button onClick={() => startEditing(el.id)}>Edit</button>
-                      <button onClick={() => handleDelete(el.id)}>
-                        Remove
-                      </button>
-                    </>
-                  )}
-                </li>
-              </Fragment>
-            ))}
+          {data.map((el) => (
+            <li key={el.id}>
+              {isEditing && editedData.id === el.id ? (
+                <>
+                  <input
+                    name="name"
+                    value={editedData.name}
+                    onChange={editingData}
+                  />
+                  <input
+                    name="age"
+                    value={editedData.age}
+                    onChange={editingData}
+                  />
+                  <button onClick={() => handleUpdate(el.id)}>Save</button>
+                  <button onClick={() => cancelEditing()}>Cancel</button>
+                </>
+              ) : (
+                <>
+                  <span>{el.name}</span>
+                  <span>{el.age}</span>
+                  <button onClick={() => startEditing(el.id)}>Edit</button>
+                  <button onClick={() => handleDelete(el.id)}>Remove</button>
+                </>
+              )}
+            </li>
+          ))}
         </ul>
       )}
       <form onSubmit={handlePost}>
