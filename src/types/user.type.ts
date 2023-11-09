@@ -4,12 +4,12 @@ export type DefaultUser = {
   age: number;
 };
 
-export type UpdatingUser = {
+export type PostingUser = {
   name: string;
   age: number;
 };
 
-export type EditingUser = {
+export type UpdatingUser = {
   id?: number;
   name: string;
   age: number;
